@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Playwrite+NZ+Basic:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    touch-action: none; /* Mobilde ekranın titremesini/kaymasını engeller */
+}
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -6,145 +11,83 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    margin: 0;
     height: 100vh;
     background-color: #fafafa;
+    overflow: hidden;
+}
+
+.score-container {
+    width: 90%;
+    max-width: 400px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.score-box {
+    background: #bbada0;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
 }
 
 .game-container {
-    width: 320px;
-    height: 320px;
-    border: 1px solid #ccc;
-    overflow: hidden;
-
+    width: 90vw;
+    height: 90vw;
+    max-width: 400px;
+    max-height: 400px;
+    background-color: #bbada0;
+    border-radius: 6px;
+    padding: 5px;
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 5px;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+    height: 100%;
 }
 
 .cell {
-    width: 77px;
-    height: 77px;
-    background-color: #f4f4f4;
+    background-color: rgba(238, 228, 218, 0.35);
+    border-radius: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5em;
-    color: #000
+    font-size: 2rem;
+    font-weight: bold;
+    color: #776e65;
 }
 
-.score-container {
-    width: 320px;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+/* Renk değerlerini data-value üzerinden aynen koruyabilirsin */
+.cell[data-value="2"] { background-color: #eee4da; }
+.cell[data-value="4"] { background-color: #ede0c8; }
+.cell[data-value="8"] { background-color: #f2b179; color: white; }
+/* ... Diğer renklerin buraya gelecek ... */
 
-}
-
-.cell[data-value="2"] {
-    background-color: #ffc0cb;
-
-}
-
-.cell[data-value="4"] {
-    background-color: #aad8e6;
-
-}
-
-.cell[data-value="8"] {
-    background-color: #98fb98;
-
-}
-
-.cell[data-value="16"] {
-    background-color: #ffd700;
-
-}
-
-.cell[data-value="32"] {
-    background-color: #87ceeb;
-
-}
-
-.cell[data-value="64"] {
-    background-color: #87ceeb;
-
-}
-
-.cell[data-value="128"] {
-    background-color: #ffff00;
-
-}
-
-.cell[data-value="256"] {
-    background-color: #40e0d0;
-
-}
-
-.cell[data-value="512"] {
-    background-color: #ff69b4;
-
-}
-
-.cell[data-value="1024"] {
-    background-color: #7b68ee;
-
-}
-
-.cell[data-value="2048"] {
-    background-color: #ff6347;
-
-}
-
-.cell[data-value="4096"] {
-    background-color: #a9a9a9;
-
-}
-
-#restart-btn {
-    margin-top: 15px;
-    padding: 10px 15px;
-    background-color: #f4f4f4;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-#game-over {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    padding: 20px;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
+#oyun-bitti {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    color: white;
     display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
+    z-index: 100;
 }
 
-.grid-cell[data-value] {
-    transition: transform 0.2s, background-color 0.2s;
-}
-
-.new-tile {
-    animation: appear 0.3s;
-}
-
-@keyframes appear {
-    from {
-        opacity: 0;
-        transform: scale(0.5);
-
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1)
-    }
+#restart-btn {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    background: #8f7a66;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
