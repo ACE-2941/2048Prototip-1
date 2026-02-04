@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 * {
-    box-sizing: border-box; /* Taşmaları engellemek için şart */
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
@@ -12,10 +12,10 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    height: 100vh;
     background-color: #fafafa;
-    overflow: hidden;
-    touch-action: none; /* Mobilde ekranın kaymasını engeller */
+    overflow: hidden; /* Sayfanın kaymasını engelle */
+    touch-action: none; /* Mobilde parmakla ekranı kaydırmayı kapat */
 }
 
 .score-container {
@@ -23,46 +23,43 @@ body {
     max-width: 320px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
-    font-size: 1.1rem;
+    margin-bottom: 20px;
     font-weight: bold;
 }
 
 .game-container {
     width: 90vw;
+    height: 90vw;
     max-width: 320px;
-    /* Sabit height yerine kare kalmasını sağlıyoruz */
-    aspect-ratio: 1 / 1; 
+    max-height: 320px;
     background-color: #bbada0;
-    border: 5px solid #bbada0; /* Kenar boşluğu */
     border-radius: 6px;
-    display: flex;
+    padding: 8px; /* Hücrelerin dış çerçeveyle olan boşluğu */
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
-    gap: 8px; /* Hücreler arası boşluk */
+    gap: 8px; /* Hücreler arasındaki boşluk */
     width: 100%;
     height: 100%;
 }
 
 .cell {
-    /* Sabit 77px değerlerini sildik, 1fr sayesinde otomatik dolacak */
-    width: 100%;
-    height: 100%;
     background-color: rgba(238, 228, 218, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.8rem; /* Mobilde sayılar düzgün görünsün */
     font-weight: bold;
     color: #776e65;
     border-radius: 4px;
+    width: 100%; /* Kendi kutusunu tam doldursun */
+    height: 100%; /* Kendi kutusunu tam doldursun */
 }
 
-/* Renklerin ve Animasyonların (Aynen Korundu) */
+/* Renkler */
 .cell[data-value="2"] { background-color: #ffc0cb; }
 .cell[data-value="4"] { background-color: #aad8e6; }
 .cell[data-value="8"] { background-color: #98fb98; }
@@ -75,36 +72,25 @@ body {
 .cell[data-value="1024"] { background-color: #7b68ee; }
 .cell[data-value="2048"] { background-color: #ff6347; }
 
-#restart-btn {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #8f7a66;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
 #oyun-bitti {
     position: fixed;
     top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
     color: #fff;
     display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 100;
+    z-index: 99;
 }
 
-.new-tile {
-    animation: appear 0.2s ease-out;
-}
-
-@keyframes appear {
-    from { opacity: 0; transform: scale(0.5); }
-    to { opacity: 1; transform: scale(1); }
+#restart-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #8f7a66;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
