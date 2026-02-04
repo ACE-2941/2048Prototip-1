@@ -1,4 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Playwrite+NZ+Basic:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none; /* Mobilde ekranın titremesini engeller */
+}
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -6,57 +14,58 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     height: 100vh;
-    background-color: #fafafa;
     margin: 0;
-    /* Mobilde kaydırmayı engellemek için */
-    touch-action: none;
+    background-color: #fafafa;
+}
+
+.score-container {
+    width: 90vw;
+    max-width: 400px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .game-container {
-    /* Mobilde ekran genişliğine göre boyutlanır */
-    width: 90vw;
-    height: 90vw;
-    max-width: 320px;
-    max-height: 320px;
-    border: 1px solid #ccc;
-    overflow: hidden;
-    background-color: #bbada0; /* Izgara arka plan rengi */
-    padding: 5px;
+    width: 95vw; /* Mobilde ekranın %95'ini kaplasın */
+    max-width: 400px; /* Bilgisayarda çok devasa olmasın */
+    aspect-ratio: 1 / 1; /* Her zaman tam kare kalmasını sağlar */
+    background-color: #bbada0;
+    border-radius: 6px;
+    padding: 8px;
+    display: flex;
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
-    gap: 5px;
+    gap: 8px;
     width: 100%;
     height: 100%;
 }
 
 .cell {
-    /* Boyutları otomatik hesaplaması için sabit genişlikleri kaldırdım */
-    width: 100%;
-    height: 100%;
     background-color: rgba(238, 228, 218, 0.35);
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5em;
-    color: #000;
-    border-radius: 3px;
+    font-size: 7vw; /* Yazı boyutu ekran genişliğine göre değişir */
+    font-weight: bold;
+    color: #776e65;
 }
 
-.score-container {
-    width: 90vw;
-    max-width: 320px;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+/* 400px'den büyük ekranlarda (PC) yazı boyutu sabitlensin */
+@media (min-width: 400px) {
+    .cell {
+        font-size: 28px;
+    }
 }
 
-/* Mevcut renklerin korunuyor */
+/* Renk tanımların (Olduğu gibi kalsın) */
 .cell[data-value="2"] { background-color: #ffc0cb; }
 .cell[data-value="4"] { background-color: #aad8e6; }
 .cell[data-value="8"] { background-color: #98fb98; }
@@ -68,45 +77,27 @@ body {
 .cell[data-value="512"] { background-color: #ff69b4; }
 .cell[data-value="1024"] { background-color: #7b68ee; }
 .cell[data-value="2048"] { background-color: #ff6347; }
-.cell[data-value="4096"] { background-color: #a9a9a9; }
-
-#restart-btn {
-    margin-top: 15px;
-    padding: 10px 15px;
-    background-color: #f4f4f4;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
 
 #oyun-bitti {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    padding: 20px;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
     color: #fff;
     display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 10;
-    width: 80%;
-    text-align: center;
+    z-index: 99;
 }
 
-.new-tile {
-    animation: appear 0.3s;
-}
-
-@keyframes appear {
-    from {
-        opacity: 0;
-        transform: scale(0.5);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1)
-    }
+#restart-btn {
+    margin-top: 15px;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background: #8f7a66;
+    color: white;
+    cursor: pointer;
 }
