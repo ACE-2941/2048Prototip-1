@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2048 Mobil</title>
+    <title>2048</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="score-container">
-        <div class="score-box">Skor: <span id="current-score">0</span></div>
-        <div class="score-box">En Yüksek: <span id="high-score">0</span></div>
+        <div>Skor: <span id="current-score">0</span> </div>
+        <div>Yuksek Skor: <span id="high-score">0</span></div>
     </div>
-
+    
     <div class="game-container">
         <div class="grid">
             <div class="cell" data-row="0" data-col="0"></div>
@@ -34,10 +36,13 @@
     </div>
 
     <div id="oyun-bitti">
-        <p>Oyun Bitti!</p>
-        <button id="restart-btn">Tekrar Oyna</button>
+        oyun bitti!
+        <button id="restart-btn">
+            tekrar oyna
+        </button>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 </html>
