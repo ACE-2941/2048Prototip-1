@@ -1,164 +1,153 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const grid = document.querySelector('.grid');
-  const size = 4;
-  let board = [];
-  let currentScore = 0;
-  const currentScoreElem = document.getElementById('current-score');
+    const grid = document.querySelector('.grid');
+    const size = 4;
+    let board = [];
+    let currentScore = 0;
+    const currentScoreElem = document.getElementById('current-score');
 
-  let highScore = localStorage.getItem('2048-highScore') || 0;
-  const highScoreElem = document.getElementById('high-score');
-  highScoreElem.textContent = highScore;
+    let highScore = localStorage.getItem('2048-highScore') || 0;
+    const highScoreElem = document.getElementById('high-score');
+    highScoreElem.textContent = highScore;
 
-  const gameOverElem = document.getElementById('oyun-bitti');
+    const gameOverElem = document.getElementById('oyun-bitti');
 
-  function updateScore(value) {
-    currentScore += value;
-    currentScoreElem.textContent = currentScore;
-    if (currentScore > highScore) {
-      highScore = currentScore;
-      highScoreElem.textContent = highScore;
-      localStorage.setItem('2048-highScore', highScore);
-    }
-  }
-
-  function restartGame() {
-    currentScore = 0;
-    currentScoreElem.textContent = '0';
-    gameOverElem.style.display = 'none';
-    initializeGame();
-  }
-
-  function initializeGame() {
-    board = [...Array(size)].map(e => Array(size).fill(0));
-    placeRandom();
-    placeRandom();
-    renderBoard();
-  }
-
-  function renderBoard() {
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
-        const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-        const prevValue = cell.dataset.value;
-        const currentValue = board[i][j];
-        if (currentValue !== 0) {
-          cell.dataset.value = currentValue;
-          cell.textContent = currentValue;
-        } else {
-          cell.textContent = '';
-          delete cell.dataset.value;
+    function updateScore(value) {
+        currentScore += value;
+        currentScoreElem.textContent = currentScore;
+        if (currentScore > highScore) {
+            highScore = currentScore;
+            highScoreElem.textContent = highScore;
+            localStorage.setItem('2048-highScore', highScore);
         }
-      }
     }
-  }
 
-  function placeRandom() {
-    const available = [];
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
-        if (board[i][j] === 0) {
-          available.push({ x: i, y: j });
-        }
-      }
+    function restartGame() {
+        currentScore = 0;
+        currentScoreElem.textContent = '0';
+        gameOverElem.style.display = 'none';
+        initializeGame();
     }
-    if (available.length > 0) {
-      const randomCell = available[Math.floor(Math.random() * available.length)];
-      board[randomCell.x][randomCell.y] = Math.random() < 0.9 ? 2 : 4;
-      const cell = document.querySelector(`[data-row="${randomCell.x}"][data-col="${randomCell.y}"]`);
-      cell.dataset.value = board[randomCell.x][randomCell.y];
-      cell.textContent = board[randomCell.x][randomCell.y];
-      cell.classList.add('new-tile');
-      setTimeout(() => cell.classList.remove('new-tile'), 300);
-    }
-  }
 
-  function move(direction) {
-    let hasChanged = false;
-    if (direction === 'ArrowUp' || direction === 'ArrowDown') {
-      for (let j = 0; j < size; j++) {
-        const column = [...Array(size)].map((_, i) => board[i][j]);
-        const newColumn = transform(column, direction === 'ArrowUp');
+    function initializeGame() {
+        board = [...Array(size)].map(e => Array(size).fill(0));
+        placeRandom();
+        placeRandom();
+        renderBoard();
+    }
+
+    function renderBoard() {
         for (let i = 0; i < size; i++) {
-          if (board[i][j] !== newColumn[i]) {
-            hasChanged = true;
-            board[i][j] = newColumn[i];
-          }
+            for (let j = 0; j < size; j++) {
+                const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+                const currentValue = board[i][j];
+                if (currentValue !== 0) {
+                    cell.dataset.value = currentValue;
+                    cell.textContent = currentValue;
+                } else {
+                    cell.textContent = '';
+                    delete cell.dataset.value;
+                }
+            }
         }
-      }
-    } else if (direction === 'ArrowLeft' || direction === 'ArrowRight') {
-      for (let i = 0; i < size; i++) {
-        const row = [...board[i]];
-        const newRow = transform(row, direction === 'ArrowLeft');
-        if ((row.join('') !== newRow.join(''))) {
-          hasChanged = true;
-          board[i] = newRow;
+    }
+
+    function placeRandom() {
+        const available = [];
+        for (let i = 0; i < size; i++) {
+            for (let j = 0; j < size; j++) {
+                if (board[i][j] === 0) available.push({ x: i, y: j });
+            }
         }
-      }
+        if (available.length > 0) {
+            const randomCell = available[Math.floor(Math.random() * available.length)];
+            board[randomCell.x][randomCell.y] = Math.random() < 0.9 ? 2 : 4;
+            const cell = document.querySelector(`[data-row="${randomCell.x}"][data-col="${randomCell.y}"]`);
+            cell.dataset.value = board[randomCell.x][randomCell.y];
+            cell.textContent = board[randomCell.x][randomCell.y];
+            cell.classList.add('new-tile');
+            setTimeout(() => cell.classList.remove('new-tile'), 200);
+        }
     }
 
-    if (hasChanged) {
-      placeRandom();
-      renderBoard();
-      checkGameOver();
+    function move(direction) {
+        let hasChanged = false;
+        if (direction === 'ArrowUp' || direction === 'ArrowDown') {
+            for (let j = 0; j < size; j++) {
+                const column = [...Array(size)].map((_, i) => board[i][j]);
+                const newColumn = transform(column, direction === 'ArrowUp');
+                for (let i = 0; i < size; i++) {
+                    if (board[i][j] !== newColumn[i]) {
+                        hasChanged = true;
+                        board[i][j] = newColumn[i];
+                    }
+                }
+            }
+        } else if (direction === 'ArrowLeft' || direction === 'ArrowRight') {
+            for (let i = 0; i < size; i++) {
+                const row = [...board[i]];
+                const newRow = transform(row, direction === 'ArrowLeft');
+                if ((row.join('') !== newRow.join(''))) {
+                    hasChanged = true;
+                    board[i] = newRow;
+                }
+            }
+        }
+        if (hasChanged) {
+            placeRandom();
+            renderBoard();
+            checkGameOver();
+        }
     }
-  }
 
-  function transform(line, moveTowardsStart) {
-    let newLine = line.filter(cell => cell !== 0);
-    if (!moveTowardsStart) newLine.reverse();
-
-    for (let i = 0; i < newLine.length - 1; i++) {
-      if (newLine[i] === newLine[i + 1]) {
-        newLine[i] *= 2;
-        updateScore(newLine[i]);
-        newLine.splice(i + 1, 1);
-      }
+    function transform(line, moveTowardsStart) {
+        let newLine = line.filter(cell => cell !== 0);
+        if (!moveTowardsStart) newLine.reverse();
+        for (let i = 0; i < newLine.length - 1; i++) {
+            if (newLine[i] === newLine[i + 1]) {
+                newLine[i] *= 2;
+                updateScore(newLine[i]);
+                newLine.splice(i + 1, 1);
+            }
+        }
+        while (newLine.length < size) newLine.push(0);
+        if (!moveTowardsStart) newLine.reverse();
+        return newLine;
     }
-    while (newLine.length < size) newLine.push(0);
-    if (!moveTowardsStart) newLine.reverse();
-    return newLine;
-  }
 
-  function checkGameOver() {
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
-        if (board[i][j] === 0) return;
-        if (j < size - 1 && board[i][j] === board[i][j + 1]) return;
-        if (i < size - 1 && board[i][j] === board[i + 1][j]) return;
-      }
+    function checkGameOver() {
+        for (let i = 0; i < size; i++) {
+            for (let j = 0; j < size; j++) {
+                if (board[i][j] === 0) return;
+                if (j < size - 1 && board[i][j] === board[i][j + 1]) return;
+                if (i < size - 1 && board[i][j] === board[i + 1][j]) return;
+            }
+        }
+        gameOverElem.style.display = 'flex';
     }
-    gameOverElem.style.display = 'flex';
-  }
 
-  // --- MOBİL İÇİN SWIPE (KAYDIRMA) EKLEMESİ ---
-  let startX, startY;
-  document.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  });
+    // --- SWIPE KONTROLÜ ---
+    let startX, startY;
+    document.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    });
 
-  document.addEventListener('touchend', e => {
-    if (!startX || !startY) return;
-    let endX = e.changedTouches[0].clientX;
-    let endY = e.changedTouches[0].clientY;
-    let diffX = startX - endX;
-    let diffY = startY - endY;
+    document.addEventListener('touchend', e => {
+        if (!startX || !startY) return;
+        let diffX = startX - e.changedTouches[0].clientX;
+        let diffY = startY - e.changedTouches[0].clientY;
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            if (Math.abs(diffX) > 30) move(diffX > 0 ? 'ArrowLeft' : 'ArrowRight');
+        } else {
+            if (Math.abs(diffY) > 30) move(diffY > 0 ? 'ArrowUp' : 'ArrowDown');
+        }
+        startX = null; startY = null;
+    });
 
-    if (Math.abs(diffX) > Math.abs(diffY)) {
-      if (Math.abs(diffX) > 30) move(diffX > 0 ? 'ArrowLeft' : 'ArrowRight');
-    } else {
-      if (Math.abs(diffY) > 30) move(diffY > 0 ? 'ArrowUp' : 'ArrowDown');
-    }
-    startX = null; startY = null;
-  });
+    document.addEventListener('keydown', event => {
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) move(event.key);
+    });
 
-  // Klavye desteği korunuyor
-  document.addEventListener('keydown', event => {
-    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
-      move(event.key);
-    }
-  });
-
-  document.getElementById('restart-btn').addEventListener('click', restartGame);
-  initializeGame();
+    document.getElementById('restart-btn').addEventListener('click', restartGame);
+    initializeGame();
 });
